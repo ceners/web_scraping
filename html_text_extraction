@@ -1,0 +1,53 @@
+################################################################################################################
+# The script extracts text data from html files and saves them as *.txt
+################################################################################################################
+
+# library
+
+library(XML)
+
+setwd("...ceners/Data/R data (working)/Scripts/fun/scraping/data/Stenozaznamy_1990") 
+
+# read and parse HTML file
+html <- htmlTreeParse('Document0076.html', useInternal = TRUE)
+
+# extracts document title / pattern search
+
+#title <- readLines('Document0076.html', encoding='UTF-8') #reads in text
+#elem <- grep('Stenoprotokol', title) #identifying the element with title
+#title <- title[elem] #extracting the element
+#title <- gsub('<h2>', '', title) #cleaning the text
+#title <- gsub('</h2>', '', title) #cleaning the text
+
+title <- unlist(xpathApply(html, '//h2', xmlValue)) #direct extraction
+
+# extracts all the paragraphs 
+text <- unlist(xpathApply(html, '//p', xmlValue)) # unlist to create a character vector
+text <- gsub('\\n', ' ', text) #replaces all \n by spaces
+text <- gsub('\\r', '', text) #removes all \r 
+
+# collapses character vector into a single string (one element) separated by spaces
+text <- paste(text, collapse = ' ') 
+
+# saving data
+write.table(text, paste(title, ".txt", sep=""), row.names=F, col.names=F)
+
+list <- list.files(pattern=".html")
+
+for (i in list) { # for loop saves text data from html documents under its title
+  
+  html <- htmlTreeParse(i, useInternal=T)
+  title <- unlist(xpathApply(html, '//h2', xmlValue))
+  text <- unlist(xpathApply(html, '//p', xmlValue)) # unlist to create a character vector
+  text <- gsub('\\n', ' ', text) #replaces all \n by spaces
+  text <- gsub('\\r', '', text) #removes all \r 
+  
+  # collapses character vector into a single string (one element) separated by spaces
+  text <- paste(text, collapse = ' ') 
+  
+  # saving data
+  write.table(text, paste(title, ".txt", sep=""), row.names=F, col.names=F)
+  
+}
+
+# based on: http://www.r-bloggers.com/reading-html-pages-in-r-for-text-processing
