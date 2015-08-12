@@ -10,3 +10,17 @@ for (i in subset) {
   lapply(subset, function(i) system(paste('"C:/Program Files/xpdfbin-win-3.04/bin64/pdftotext.exe"', paste0('"', i, '" -nopgbrk')), wait = FALSE) ) #apply function for PDF conversion without any parameters - additional parameters can be inserted in paste0 function in '' after i statement after -nopgbrk (other possible statemenets are easy to find in XPDF texttopdf documentation file)
 
 }
+
+# renaming *.txt files
+
+setwd("c:/Users/Ocelot/Desktop/data/PS2013/navrhy_zakonov/ps6")
+
+files <- list.files(patter="txt")
+n <- getwd()
+n <- substr(n, nchar(n)-24, nchar(n)-19)
+  
+for (i in files) {    
+  
+ file.rename(from=i, to=sub(pattern="orig2.sqw@idd=", replacement=paste(n, sep="","_"), i))
+  
+}
