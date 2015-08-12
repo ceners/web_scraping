@@ -1,4 +1,4 @@
-dest <- "c:\\Users\\Lukas\\Desktop\\PS2013\\navrhy_zakonov\\ps6" #destination of the list
+dest <- "c:/Users/Ocelot/Desktop/data/PS2013/navrhy_zakonov/ps6" #destination of the list
 myfiles <- list.files(path = dest, pattern = "pdf", full.names = TRUE) #list of files
 subset <- myfiles[c(1:10)] #10 file subset for testing purposes
 datalist <- myfiles #all files
